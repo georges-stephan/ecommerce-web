@@ -1,0 +1,82 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="">
+<link rel="icon" href="img/favicon.ico">
+
+<title>Welcome to AMSH!</title>
+
+<!-- Bootstrap core CSS -->
+<link href="css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Custom styles for this template -->
+<link href="css/signin.css" rel="stylesheet">
+
+<!--  JQuery -->
+<script src="js/jquery-3.5.1.min.js"></script>
+</head>
+
+<body class="text-center">
+	<form class="form-signin" name="login-form" id="login-form">
+		<img class="mb-4"
+			src="img/a929f5b0-bec8-4022-aab0-cbce8cda2f62_200x200.png" alt=""
+			width="200" height="200">
+		<h1 class="h3 mb-3 font-weight-normal">Welcome to AMSH - Please sign in</h1>
+		<label for="inputUsername" class="sr-only">Email address</label> <input
+			id="inputUsername" name="inputUsername" class="form-control"
+			placeholder="Username" required autofocus> <label
+			for="inputPassword" class="sr-only">Password</label> <input
+			type="password" id="inputPassword" name="inputPassword"
+			class="form-control" placeholder="Password" required>
+
+		<button class="btn btn-lg btn-primary btn-block" type="button" onclick="tryToLogin()">Sign
+			in</button>
+		<p class="mt-5 mb-3 text-muted">&copy; Stephan, 2020 - 3</p>
+	</form>
+</body>
+
+<script>
+  function tryToLogin() {
+	  
+	  var jsonText = '{"username":"'+window.btoa(document.getElementById("inputUsername").value)
+		  +'","password":"'+window.btoa(document.getElementById("inputPassword").value)+'"}'
+		  
+		  console.log(jsonText);
+		  
+		 $.ajax({
+            url: 'login',
+            dataType: 'json',
+            data: jsonText,
+            type: 'POST',
+            success: function(data, textStatus, jqXHR){
+				console.log("Ok, got "+textStatus)
+				console.log(JSON.stringify(data))
+				
+				var obj = JSON.parse(JSON.stringify(data));
+				
+				if(obj.loginSuccessful==true) {
+					alert("Your Login Was Successful!")
+				} else {
+					alert(obj.replyMessage)
+				}
+								
+				// Reset
+				$('#login-form').trigger("reset");
+								
+                $("#results").append("received by ajax: " + data);
+                },
+            error: function(XMLHttpRequest, textStatus, errorThrown){
+				console.log("Failed, got "+errorThrown)
+				alert("Failed, got "+errorThrown)
+                $("#results").append("error");
+                }
+            });
+	}
+  
+  </script>
+</html>
