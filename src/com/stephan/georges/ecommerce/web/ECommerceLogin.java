@@ -51,7 +51,7 @@ public class ECommerceLogin extends HttpServlet {
 		String password = jsonObject.get("password").getAsString();
 
 		// Connect Rest
-		URL url = new URL("http://web-as:8080/authenticate");
+		URL url = new URL("http://"+System.getenv("web-as-server")+":8080/authenticate");
 		HttpURLConnection httpConnection = (HttpURLConnection) url.openConnection();
 		httpConnection.setDoOutput(true);
 		httpConnection.setRequestMethod("POST");
