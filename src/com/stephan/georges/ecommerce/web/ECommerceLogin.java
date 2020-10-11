@@ -6,7 +6,6 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Base64;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -51,7 +50,7 @@ public class ECommerceLogin extends HttpServlet {
 		String password = jsonObject.get("password").getAsString();
 
 		// Connect Rest
-		URL url = new URL("http://"+System.getenv("web-as-server")+":8080/authenticate");
+		URL url = new URL("http://"+System.getenv("web-as-server")+":8080/api/v1/account/credentials");
 		HttpURLConnection httpConnection = (HttpURLConnection) url.openConnection();
 		httpConnection.setDoOutput(true);
 		httpConnection.setRequestMethod("POST");
@@ -67,8 +66,6 @@ public class ECommerceLogin extends HttpServlet {
 		jsonRequest.append(password);
 		jsonRequest.append("\"\r\n");
 		jsonRequest.append("}\r\n");
-
-		System.out.println(jsonRequest.toString());
 
 		try (OutputStream os = httpConnection.getOutputStream();) {
 			os.write(jsonRequest.toString().getBytes());
